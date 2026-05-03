@@ -21,7 +21,7 @@ COUPANG_LINKS: dict[str, list[dict]] = {
         {"name": "고려은단 멀티비타민 올인원 맨 60+", "desc": "산화 스트레스 방어, 면역력 지원", "url": "https://link.coupang.com/a/eBnBCN", "image_url": "https://image12.coupangcdn.com/image/affiliate/banner/64d2fbe96e9a977f7a6924516fb4d572@2x.jpg"},
     ],
     "아연": [
-        {"name": "아연 25mg", "desc": "면역·피부·남성 건강 지원", "url": "https://link.coupang.com/TODO"},
+        {"name": "자미에슨 아연 100정", "desc": "면역·피부·남성 건강 지원", "url": "https://link.coupang.com/a/eBnOSv", "image_url": "https://img4a.coupangcdn.com/image/affiliate/banner/93d0b694962b3bbd6ebb936210912a5d@2x.jpg"},
     ],
     "칼슘": [
         {"name": "내츄럴플러스 상어연골 칼슘 180정", "desc": "뼈 건강 필수 칼슘, 흡수율 높은 상어연골 원료", "url": "https://link.coupang.com/a/eBnELW", "image_url": "https://image7.coupangcdn.com/image/affiliate/banner/41b67a9c296edbc79c6cf5f58a4729a1@2x.jpg"},
@@ -30,13 +30,13 @@ COUPANG_LINKS: dict[str, list[dict]] = {
         {"name": "비타할로 철분 90정", "desc": "헴철 형태로 흡수율 높음, 위장 자극 최소화", "url": "https://link.coupang.com/a/eBnHi3", "image_url": "https://img3a.coupangcdn.com/image/affiliate/banner/dc2bc9b4da864b25d45ed5dda09ebcff@2x.jpg"},
     ],
     "엽산": [
-        {"name": "활성형 엽산 (메틸폴레이트)", "desc": "MTHFR 유전자 변이에도 활용 가능한 활성형", "url": "https://link.coupang.com/TODO"},
+        {"name": "솔가 엽산 800 100정", "desc": "임산부·가임기 여성 필수, 신경관 결손 예방", "url": "https://link.coupang.com/a/eBnTRE", "image_url": "https://image2.coupangcdn.com/image/affiliate/banner/18ea0fa75cea28753b4924421e1f80d1@2x.jpg"},
     ],
     "비타민B12": [
         {"name": "메틸코발라민 B12 1000mcg 120정", "desc": "활성형 B12, 신경 보호·피로 회복", "url": "https://link.coupang.com/a/eBnK9N", "image_url": "https://image2.coupangcdn.com/image/affiliate/banner/23da7d96884fd60c30833524728e7624@2x.jpg"},
     ],
     "코엔자임Q10": [
-        {"name": "유비퀴놀 코큐텐 100mg", "desc": "환원형 CoQ10, 40대 이상 흡수율 우수", "url": "https://link.coupang.com/TODO"},
+        {"name": "헬스프랜드 코엔자임Q10 맥스 6개월분", "desc": "환원형 CoQ10, 40대 이상 흡수율 우수", "url": "https://link.coupang.com/a/eBnWrv", "image_url": "https://image15.coupangcdn.com/image/affiliate/banner/6983be3ef99567b72ed94edbc4eb812a@2x.jpg"},
     ],
     "루테인": [
         {"name": "뉴트리정 프리미엄 눈건강 루테인 300정", "desc": "황반변성 예방, 눈 피로 회복", "url": "https://link.coupang.com/a/eBnzuv", "image_url": "https://image11.coupangcdn.com/image/affiliate/banner/80f0262e8a2243c136268bb7fd7e3e8a@2x.jpg"},
@@ -45,7 +45,7 @@ COUPANG_LINKS: dict[str, list[dict]] = {
         {"name": "GNC 비피도 핏 다이어트 유산균", "desc": "다균주 복합 유산균, 장 환경 개선", "url": "https://link.coupang.com/a/eBntGq", "image_url": "https://image4.coupangcdn.com/image/affiliate/banner/0c62cb5612d01febefe11b99ad5f4e45@2x.jpg"},
     ],
     "글루타치온": [
-        {"name": "리포소말 글루타치온", "desc": "강력 항산화, 해독 지원", "url": "https://link.coupang.com/TODO"},
+        {"name": "더건강드림 리포좀 글루타치온 98% 600mg", "desc": "강력 항산화, 해독 지원", "url": "https://link.coupang.com/a/eBn07X", "image_url": "https://img4a.coupangcdn.com/image/affiliate/banner/a27f007690959c2952376ee34ad68b09@2x.jpg"},
     ],
     "밀크씨슬": [
         {"name": "센트휴 수퍼 알부민 밀크씨슬 90", "desc": "간세포 보호, 알코올 해독 지원", "url": "https://link.coupang.com/a/eBnxkt", "image_url": "https://image7.coupangcdn.com/image/affiliate/banner/ad0e0f4ccd7f4b680fb8ffa0d48e371b@2x.jpg"},
@@ -60,25 +60,25 @@ COUPANG_LINKS: dict[str, list[dict]] = {
         {"name": "케어센스 혈당측정기+시험지110매", "desc": "공복·식후 혈당 자가 모니터링 필수 도구", "url": "https://link.coupang.com/a/eBnmby", "image_url": "https://image5.coupangcdn.com/image/affiliate/banner/00a3bbb569b23c3816ccffdb93c69477@2x.jpg"},
     ],
     "홍국": [
-        {"name": "홍국 코큐텐 복합", "desc": "콜레스테롤 관리, 스타틴 대체 자연 성분", "url": "https://link.coupang.com/TODO"},
+        {"name": "모어네이처 콜레스테롤 케어 발효 홍국 60정", "desc": "콜레스테롤 관리, 스타틴 대체 자연 성분", "url": "https://link.coupang.com/a/eBn3KZ", "image_url": "https://img5c.coupangcdn.com/image/affiliate/banner/a9791978d5efe4cf49515237472b071f@2x.jpg"},
     ],
     "베르베린": [
-        {"name": "베르베린 500mg", "desc": "혈당·콜레스테롤 조절, 자연 유래 성분", "url": "https://link.coupang.com/TODO"},
+        {"name": "루니에르 베르베린 100% HACCP 인증", "desc": "혈당·콜레스테롤 조절, 자연 유래 성분", "url": "https://link.coupang.com/a/eBn6lK", "image_url": "https://image12.coupangcdn.com/image/affiliate/banner/b0d982350b9f4b8b0e457623195bef7b@2x.jpg"},
     ],
     "강황": [
-        {"name": "커큐민 BCM-95 500mg", "desc": "흡수율 높인 강황 추출물, 항염 효과", "url": "https://link.coupang.com/TODO"},
+        {"name": "담소원 유기농 국내산 강황가루 350g", "desc": "흡수율 높인 강황 추출물, 항염 효과", "url": "https://link.coupang.com/a/eBn8JY", "image_url": "https://img2a.coupangcdn.com/image/affiliate/banner/0cc5dc8969228e0771f372614c7fdce8@2x.jpg"},
     ],
     "비오틴": [
         {"name": "닥터스베스트 비오틴 10000mcg 120정", "desc": "탈모·손발톱 강화, 피부 케라틴 합성 지원", "url": "https://link.coupang.com/a/eBnJlU", "image_url": "https://img5c.coupangcdn.com/image/affiliate/banner/288e1229fc87e89def75700b1ae82bff@2x.jpg"},
     ],
     "크레아틴": [
-        {"name": "크레아틴 모노하이드레이트", "desc": "근육 합성·운동 능력 향상", "url": "https://link.coupang.com/TODO"},
+        {"name": "나우푸드 크레아틴 모노하이드레이트 750mg", "desc": "근육 합성·운동 능력 향상", "url": "https://link.coupang.com/a/eBoa0o", "image_url": "https://img2c.coupangcdn.com/image/affiliate/banner/dee2f8133dd3a210f898fec8e42d98cc@2x.jpg"},
     ],
 }
 
 CATEGORY_KEYWORD_MAP: dict[str, list[str]] = {
     "비타민D": ["비타민d", "비타민 d", "비타민디"],
-    "오메가3": ["오메가3", "오메가-3", "epa", "dha"],
+    "오메가3": ["오메가3", "오메가-3", "epa", "dha", "고혈압", "혈압"],
     "마그네슘": ["마그네슘"],
     "비타민C": ["비타민c", "비타민 c"],
     "아연": ["아연"],
@@ -92,7 +92,7 @@ CATEGORY_KEYWORD_MAP: dict[str, list[str]] = {
     "글루타치온": ["글루타치온"],
     "밀크씨슬": ["밀크씨슬", "간 건강", "지방간"],
     "종합비타민": ["종합비타민"],
-    "혈압계": ["고혈압", "혈압"],
+    "혈압계": [],
     "혈당계": ["당뇨", "혈당", "공복혈당"],
     "홍국": ["홍국", "콜레스테롤", "고지혈증"],
     "베르베린": ["베르베린"],
