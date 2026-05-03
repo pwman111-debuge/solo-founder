@@ -10,13 +10,13 @@ import os
 from playwright.sync_api import sync_playwright
 
 BLOG_NAME = os.environ.get("TISTORY_BLOG_NAME", "doctorhwang")
+EMAIL = os.environ.get("TISTORY_EMAIL", "")
+PASSWORD = os.environ.get("TISTORY_PASSWORD", "")
 SESSION_FILE = Path(__file__).parent / "tistory_session.json"
 
 
 def main():
-    print("티스토리 로그인 세션 저장 도구")
-    print("브라우저가 열리면 카카오 계정으로 로그인 후 관리 페이지가 열릴 때까지 기다려주세요.")
-    print()
+    print("티스토리 카카오 자동 로그인 세션 저장")
 
     with sync_playwright() as p:
         browser = p.chromium.launch(headless=False)
@@ -32,8 +32,14 @@ def main():
         page.goto(f"https://{BLOG_NAME}.tistory.com/manage/newpost/")
         page.wait_for_load_state("networkidle", timeout=30000)
 
-        print("로그인 대기 중... (최대 5분)")
-        page.wait_for_url(f"**{BLOG_NAME}.tistory.com/manage/**", timeout=300000)
+        if "login" in page.url or "kakao" in page.url or "auth" in page.url:
+            if "tistory.com/auth/login" in page.url:
+                page.get_by_role("link", name="카카오계정으로 로그인").click()
+                page.wait_for_load_state("networkidle", timeout=15000)
+            page.get_by_role("textbox", name="계정 정보 입력").fill(EMAIL)
+            page.get_by_role("textbox", name="비밀번호 입력").fill(PASSWORD)
+            page.get_by_role("button", name="로그인", exact=True).click()
+            page.wait_for_url(f"**{BLOG_NAME}.tistory.com/manage/**", timeout=60000)
 
         cookies = context.cookies()
         SESSION_FILE.write_text(json.dumps(cookies, ensure_ascii=False), encoding="utf-8")

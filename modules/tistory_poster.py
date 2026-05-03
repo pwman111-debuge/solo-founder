@@ -10,6 +10,8 @@ SESSION_FILE = BASE_DIR / "tistory_session.json"
 BLOG_NAME = os.environ.get("TISTORY_BLOG_NAME", "doctorhwang")
 CATEGORY = os.environ.get("POST_CATEGORY", "건강 이야기")
 HEADLESS = os.environ.get("HEADLESS", "False").lower() == "true"
+EMAIL = os.environ.get("TISTORY_EMAIL", "")
+PASSWORD = os.environ.get("TISTORY_PASSWORD", "")
 
 
 def post_to_tistory(title: str, html: str) -> str:
@@ -32,8 +34,7 @@ def post_to_tistory(title: str, html: str) -> str:
         page.wait_for_load_state("networkidle", timeout=30000)
 
         if "login" in page.url or "kakao" in page.url or "auth" in page.url:
-            print("  ⚠  브라우저에서 카카오 로그인을 완료해주세요...")
-            page.wait_for_url(f"**{BLOG_NAME}.tistory.com/manage/**", timeout=180000)
+            _kakao_login(page, BLOG_NAME)
             _save_session(context)
             print("  세션 저장 완료")
 
@@ -49,6 +50,22 @@ def post_to_tistory(title: str, html: str) -> str:
         _save_session(context)
         browser.close()
         return post_url
+
+
+def _kakao_login(page, blog_name: str) -> None:
+    print("  카카오 자동 로그인 시도 중...")
+    page.wait_for_load_state("networkidle", timeout=15000)
+
+    if "tistory.com/auth/login" in page.url:
+        page.get_by_role("link", name="카카오계정으로 로그인").click()
+        page.wait_for_load_state("networkidle", timeout=15000)
+
+    page.get_by_role("textbox", name="계정 정보 입력").fill(EMAIL)
+    page.get_by_role("textbox", name="비밀번호 입력").fill(PASSWORD)
+    page.get_by_role("button", name="로그인", exact=True).click()
+
+    page.wait_for_url(f"**{blog_name}.tistory.com/manage/**", timeout=60000)
+    print("  카카오 로그인 완료")
 
 
 def _fill_title(page, title: str) -> None:
