@@ -77,9 +77,9 @@ def _dismiss_restore_popup(page) -> None:
     for btn_text in ["취소", "아니오", "닫기", "새 글 작성"]:
         try:
             btn = page.locator(f"button:has-text('{btn_text}')").first
-            if btn.is_visible(timeout=800):
+            if btn.is_visible(timeout=2000):
                 btn.click()
-                page.wait_for_timeout(500)
+                page.wait_for_timeout(800)
                 return
         except Exception:
             continue
@@ -92,18 +92,21 @@ def _inject_html(page, html: str) -> None:
     )
     page.wait_for_timeout(1500)
 
+    expected_len = len(html)
+
     for attempt in range(4):
         _dismiss_restore_popup(page)
         page.evaluate("(content) => tinymce.activeEditor.setContent(content)", html)
         page.wait_for_timeout(2000)
+        _dismiss_restore_popup(page)
 
         current = page.evaluate("() => tinymce.activeEditor.getContent()")
-        if current and len(current) > 200:
+        if current and len(current) > 200 and abs(len(current) - expected_len) / expected_len < 0.4:
             page.evaluate("() => tinymce.activeEditor.save()")
             page.wait_for_timeout(500)
             print(f"  [본문 주입] 성공 ({len(current)}자)")
             return
-        print(f"  [본문 주입] 시도 {attempt + 1}: 비어있음, 재시도")
+        print(f"  [본문 주입] 시도 {attempt + 1}: 길이 불일치({len(current) if current else 0}/{expected_len}), 재시도")
         page.wait_for_timeout(1500)
 
     raise RuntimeError("본문 주입 실패 — TinyMCE에 내용이 들어가지 않음")
@@ -133,7 +136,7 @@ def _publish(page) -> str:
 
     page.get_by_role("dialog").get_by_role("button", name="공개 발행").click(timeout=5000)
 
-    for _ in range(6):
+    for _ in range(15):
         page.wait_for_timeout(3000)
         new_url = _latest_post_url()
         if new_url != old_url:
