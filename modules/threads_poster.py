@@ -4,6 +4,7 @@ import re
 import time
 import urllib.request
 import urllib.parse
+import urllib.error
 from pathlib import Path
 
 BASE_DIR = Path(__file__).parent.parent
@@ -28,12 +29,21 @@ def post_to_threads(summary: str, post_url: str) -> bool:
     if len(text) > 490:
         text = text[:487] + "..."
 
-    try:
-        post_id = _publish(user_id, token, text)
-        return bool(post_id)
-    except Exception as e:
-        print(f"  [Threads] 포스팅 실패: {e}")
-        return False
+    for attempt in range(3):
+        try:
+            post_id = _publish(user_id, token, text)
+            return bool(post_id)
+        except urllib.error.HTTPError as e:
+            if e.code >= 500 and attempt < 2:
+                print(f"  [Threads] HTTP {e.code} -- 15초 후 재시도 ({attempt + 1}/2)")
+                time.sleep(15)
+                continue
+            print(f"  [Threads] 포스팅 실패: {e}")
+            return False
+        except Exception as e:
+            print(f"  [Threads] 포스팅 실패: {e}")
+            return False
+    return False
 
 
 def _clean_summary(text: str) -> str:

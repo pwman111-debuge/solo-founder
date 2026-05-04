@@ -1,4 +1,5 @@
 import sys
+import os
 import time
 import argparse
 from pathlib import Path
@@ -7,6 +8,20 @@ from dotenv import load_dotenv
 sys.stdout.reconfigure(encoding="utf-8")
 
 load_dotenv(Path(__file__).parent / ".env")
+
+LOCK_FILE = Path(__file__).parent / ".running.lock"
+
+
+def acquire_lock():
+    if LOCK_FILE.exists():
+        pid = LOCK_FILE.read_text().strip()
+        print(f"이미 실행 중입니다 (PID {pid}). 중복 실행 방지로 종료합니다.")
+        sys.exit(1)
+    LOCK_FILE.write_text(str(os.getpid()))
+
+
+def release_lock():
+    LOCK_FILE.unlink(missing_ok=True)
 
 from modules.keyword_picker import pick_keyword
 from modules.content_generator import generate_content
@@ -17,7 +32,7 @@ from modules.linkedin_poster import post_to_linkedin
 from modules.logger import log_post
 
 POSTS_PER_RUN = 3
-DELAY_BETWEEN_POSTS = 30
+DELAY_BETWEEN_POSTS = 120
 
 
 def run_once(index: int, total: int, keyword_override: str | None = None) -> dict | None:
@@ -90,4 +105,8 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    acquire_lock()
+    try:
+        main()
+    finally:
+        release_lock()
