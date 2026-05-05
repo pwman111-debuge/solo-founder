@@ -38,14 +38,22 @@ def post_to_tistory(title: str, html: str) -> str:
             _save_session(context)
             print("  세션 저장 완료")
 
-        page.on("dialog", lambda d: d.dismiss())
+        alerts: list[str] = []
+
+        def on_dialog(d):
+            print(f"  [Dialog] {d.type}: {d.message}")
+            if d.type == "alert":
+                alerts.append(d.message)
+            d.accept()
+
+        page.on("dialog", on_dialog)
         page.wait_for_timeout(2000)
         _dismiss_restore_popup(page)
 
         _fill_title(page, title)
         _inject_html(page, html)
         _set_category(page, CATEGORY)
-        post_url = _publish(page)
+        post_url = _publish(page, alerts)
 
         _save_session(context)
         browser.close()
@@ -123,7 +131,7 @@ def _set_category(page, category: str) -> None:
         pass
 
 
-def _publish(page) -> str:
+def _publish(page, alerts: list[str]) -> str:
     page.evaluate("() => tinymce.activeEditor.save()")
     page.wait_for_timeout(500)
     final = page.evaluate("() => tinymce.activeEditor.getContent()")
@@ -133,15 +141,33 @@ def _publish(page) -> str:
 
     page.click("#publish-layer-btn", timeout=5000)
     page.wait_for_selector("#publish-btn", timeout=10000)
-    page.wait_for_timeout(500)
+    page.wait_for_timeout(1000)
 
-    page.click("#publish-btn", timeout=5000)
+    publish_btn = page.locator("#publish-btn")
+    publish_btn.scroll_into_view_if_needed()
+    box = publish_btn.bounding_box()
+    if box:
+        cx = box["x"] + box["width"] / 2
+        cy = box["y"] + box["height"] / 2
+        page.mouse.move(cx, cy)
+        page.wait_for_timeout(200)
+        page.mouse.down()
+        page.wait_for_timeout(80)
+        page.mouse.up()
+    else:
+        publish_btn.click(force=True, timeout=5000)
+
+    page.wait_for_timeout(3000)
+    if alerts:
+        raise RuntimeError(f"티스토리 발행 거부 — alert: {alerts[-1]}")
 
     for _ in range(15):
         page.wait_for_timeout(3000)
         new_url = _latest_post_url()
         if new_url != old_url:
             return new_url
+        if alerts:
+            raise RuntimeError(f"티스토리 발행 거부 — alert: {alerts[-1]}")
 
     raise RuntimeError(f"발행 후 45초간 새 URL 미감지 — 티스토리 발행 실패 (직전 URL: {old_url})")
 
