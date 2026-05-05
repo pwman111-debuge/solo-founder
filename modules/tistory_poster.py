@@ -131,11 +131,11 @@ def _publish(page) -> str:
 
     old_url = _latest_post_url()
 
-    page.locator("#publish-layer-btn, button:has-text('완료')").first.click(timeout=5000)
-    page.wait_for_selector("[role='dialog']", timeout=8000)
+    page.click("#publish-layer-btn", timeout=5000)
+    page.wait_for_selector("#publish-btn", timeout=10000)
     page.wait_for_timeout(500)
 
-    page.get_by_role("dialog").get_by_role("button", name="공개 발행").click(timeout=5000)
+    page.click("#publish-btn", timeout=5000)
 
     for _ in range(15):
         page.wait_for_timeout(3000)
