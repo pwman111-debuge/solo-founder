@@ -74,12 +74,13 @@ def _fill_title(page, title: str) -> None:
 
 
 def _dismiss_restore_popup(page) -> None:
-    for btn_text in ["취소", "아니오", "닫기", "새 글 작성"]:
+    for btn_text in ["새 글 작성", "취소", "아니오", "닫기"]:
         try:
             btn = page.locator(f"button:has-text('{btn_text}')").first
             if btn.is_visible(timeout=2000):
                 btn.click()
-                page.wait_for_timeout(800)
+                page.wait_for_timeout(1000)
+                print(f"  [팝업 처리] '{btn_text}' 클릭")
                 return
         except Exception:
             continue
@@ -142,7 +143,7 @@ def _publish(page) -> str:
         if new_url != old_url:
             return new_url
 
-    return old_url
+    raise RuntimeError(f"발행 후 45초간 새 URL 미감지 — 티스토리 발행 실패 (직전 URL: {old_url})")
 
 
 def _latest_post_url() -> str:
