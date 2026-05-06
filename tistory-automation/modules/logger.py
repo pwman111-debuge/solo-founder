@@ -7,6 +7,7 @@ FIELDS = ["date", "keyword", "title", "post_url", "threads", "linkedin"]
 
 
 def log_post(keyword: str, title: str, post_url: str, threads_ok: bool = False, linkedin_ok: bool = False) -> None:
+    LOG_FILE.parent.mkdir(parents=True, exist_ok=True)
     is_new = not LOG_FILE.exists() or LOG_FILE.stat().st_size == 0
     with open(LOG_FILE, "a", encoding="utf-8", newline="") as f:
         writer = csv.DictWriter(f, fieldnames=FIELDS)
