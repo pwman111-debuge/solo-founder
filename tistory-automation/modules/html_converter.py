@@ -45,9 +45,11 @@ def convert_to_html(markdown_text: str, coupang_items_meta: list | None) -> str:
     coupang_html = ""
     if COUPANG_ENABLED:
         categories = [item["category"] for item in coupang_items_meta] if coupang_items_meta else []
-        products = get_coupang_items(categories)
+        products = get_coupang_items(categories, limit=2)
         if products:
             coupang_html = _build_coupang_block(products[:1])
+            if len(products) >= 2:
+                body_html = _inject_mid_coupang(body_html, _build_coupang_block(products[1:2]))
 
     disclaimer = (
         f'<p style="{DISCLAIMER_STYLE}">'
@@ -89,6 +91,22 @@ def _style_summary_box(html: str) -> str:
     boxed = f'<div style="{SUMMARY_BOX_STYLE}">{summary_content}</div>'
 
     return html[:start_idx] + boxed + html[end_idx:]
+
+
+def _inject_mid_coupang(html: str, card_html: str) -> str:
+    """본문 h2 중 가운데(N//2번째) 직전에 카드를 삽입. h2가 1개 이하면 원본 반환."""
+    positions = []
+    start = 0
+    while True:
+        pos = html.find("<h2", start)
+        if pos == -1:
+            break
+        positions.append(pos)
+        start = pos + 1
+    if len(positions) < 2:
+        return html
+    target = positions[len(positions) // 2]
+    return html[:target] + card_html + html[target:]
 
 
 def _build_coupang_block(products: list[dict]) -> str:

@@ -109,17 +109,30 @@ def _valid_products(category: str) -> list[dict]:
     return [p for p in COUPANG_LINKS.get(category, []) if "TODO" not in p["url"]]
 
 
-def get_coupang_items(category_names: list[str]) -> list[dict]:
-    """요청 카테고리 우선, 유효 상품 없으면 범용 카테고리로 폴백."""
+def get_coupang_items(category_names: list[str], limit: int = 1) -> list[dict]:
+    """요청 카테고리 우선, 유효 상품 없으면 범용 카테고리로 폴백.
+    같은 url 중복 제거하여 limit개까지 수집."""
+    picked: list[dict] = []
+    seen_urls: set[str] = set()
+
     for cat in category_names:
-        products = _valid_products(cat)
-        if products:
-            return products[:1]
+        for p in _valid_products(cat):
+            if p["url"] in seen_urls:
+                continue
+            picked.append(p)
+            seen_urls.add(p["url"])
+            if len(picked) >= limit:
+                return picked
 
     for cat in FALLBACK_CATEGORIES:
-        if cat not in category_names:
-            products = _valid_products(cat)
-            if products:
-                return products[:1]
+        if cat in category_names:
+            continue
+        for p in _valid_products(cat):
+            if p["url"] in seen_urls:
+                continue
+            picked.append(p)
+            seen_urls.add(p["url"])
+            if len(picked) >= limit:
+                return picked
 
-    return []
+    return picked
