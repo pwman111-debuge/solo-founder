@@ -70,7 +70,7 @@ def _refresh_token(token: str) -> str:
 
 def _publish(user_id: str, token: str, text: str) -> str:
     # 이미지가 있으면 IMAGE 타입, 없으면 TEXT 타입
-    image_url = os.environ.get("THREADS_OG_IMAGE_URL", "")
+    image_url = "https://raw.githubusercontent.com/pwman111-debuge/solo-founder/master/tistory-automation/config/profile.jpg"
 
     if image_url:
         params1 = {
