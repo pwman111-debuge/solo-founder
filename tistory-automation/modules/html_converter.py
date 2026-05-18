@@ -24,8 +24,9 @@ DISCLAIMER_STYLE = (
     "margin-top:48px;padding-top:12px;"
 )
 COUPANG_TOP_NOTICE_STYLE = (
-    "font-size:13px;color:#555;background:#fff8e1;border-left:3px solid #FFC107;"
-    "padding:10px 14px;margin-bottom:24px;"
+    "font-size:14px;font-weight:bold;color:#c0392b;"
+    "background:#fff3cd;border:1px solid #f0ad4e;border-radius:4px;"
+    "padding:12px 16px;margin-bottom:24px;display:block;"
 )
 COUPANG_NOTICE_STYLE = "font-size:11px;color:#bbb;margin-bottom:10px;"
 COUPANG_CARD_STYLE = (
@@ -41,7 +42,11 @@ def convert_to_html(markdown_text: str, coupang_items_meta: list | None) -> str:
     # 첫 번째 <p> 뒤의 ## 핵심 요약 블록을 파란 박스로 변환
     body_html = _style_summary_box(body_html)
 
-    coupang_top = ""
+    coupang_top = (
+        f'<p style="{COUPANG_TOP_NOTICE_STYLE}">'
+        "[광고] 이 포스팅은 쿠팡 파트너스 활동의 일환으로, 이에 따른 일정액의 수수료를 제공받습니다."
+        "</p>"
+    )
     coupang_html = ""
     if COUPANG_ENABLED:
         categories = [item["category"] for item in coupang_items_meta] if coupang_items_meta else []
