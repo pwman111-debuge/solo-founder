@@ -52,22 +52,23 @@ def run_once(index: int, total: int, keyword_override: str | None = None) -> dic
         print(f"  [2/6] 콘텐츠 생성 완료 (쿠팡 삽입: {coupang_label})")
 
         html = convert_to_html(content["markdown"], coupang_meta)
-        print(f"  [3/5] HTML 변환 완료")
+        print(f"  [3/6] HTML 변환 완료")
 
         post_url = post_to_tistory(
             title=content["title"],
             html=html,
         )
-        print(f"  [4/5] 티스토리 발행 완료")
+        print(f"  [4/6] 티스토리 발행 완료")
 
         threads_ok = post_to_threads(content["sns_summary"], post_url)
         linkedin_ok = post_to_linkedin(content["sns_summary"], post_url)
         t_mark = "✓" if threads_ok else "✗"
         l_mark = "✓" if linkedin_ok else "✗"
-        print(f"  [5/5] Threads {t_mark}  LinkedIn {l_mark}")
+        print(f"  [5/6] Threads {t_mark}  LinkedIn {l_mark}")
         print(f"  → {post_url}")
 
         log_post(kw["keyword"], content["title"], post_url, threads_ok, linkedin_ok)
+        print(f"  [6/6] 로그 기록 완료")
 
         return {"url": post_url, "title": content["title"]}
 
