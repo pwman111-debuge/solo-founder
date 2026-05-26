@@ -47,7 +47,7 @@ def generate_content(keyword_data: dict) -> dict:
         category=keyword_data["category"],
     )
 
-    claude_path = r"C:\Users\hwang\AppData\Roaming\npm\claude.cmd"
+    claude_path = r"C:\Users\WOORI\AppData\Roaming\npm\claude.cmd"
     result = subprocess.run(
         [claude_path, "-p", "--output-format", "json"],
         input=prompt,
