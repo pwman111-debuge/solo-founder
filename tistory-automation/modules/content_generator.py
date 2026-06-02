@@ -1,5 +1,22 @@
 import json
+import os
+import shutil
 import subprocess
+
+
+def _resolve_claude_path() -> str:
+    candidates = [
+        rf"C:\Users\{os.environ.get('USERNAME', '')}\AppData\Roaming\npm\claude.cmd",
+        r"C:\Users\WOORI\AppData\Roaming\npm\claude.cmd",
+        r"C:\Users\hwang\AppData\Roaming\npm\claude.cmd",
+    ]
+    for path in candidates:
+        if os.path.isfile(path):
+            return path
+    found = shutil.which("claude")
+    if found:
+        return found
+    raise FileNotFoundError("claude.cmd를 찾을 수 없습니다. npm 전역 설치 경로를 확인하세요.")
 
 PROMPT_TEMPLATE = """당신은 대구 중구 우리내과 황원장(내과 전문의)입니다. 건강 블로그 독자(일반인)를 위한 글을 작성하세요.
 
@@ -47,7 +64,7 @@ def generate_content(keyword_data: dict) -> dict:
         category=keyword_data["category"],
     )
 
-    claude_path = r"C:\Users\WOORI\AppData\Roaming\npm\claude.cmd"
+    claude_path = _resolve_claude_path()
     result = subprocess.run(
         [claude_path, "-p", "--output-format", "json"],
         input=prompt,
